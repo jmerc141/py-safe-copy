@@ -5,7 +5,7 @@ if __name__ == '__main__':
 	dst = sys.argv[2]
 
 	# Assuming if src is a dir then destination should be a dir
-	if os.path.isdir(src):
+	if os.path.isdir(src) and os.path.isdir(dst):
 		# is a folder
 		try:
 			os.makedirs(dst)
@@ -21,8 +21,12 @@ if __name__ == '__main__':
 				srcFiles.append(os.path.join(root, d))
 
 		safecopy.safeCopy(src, srcFiles, dst)
-	elif not os.path.isdir(src):
+	# Only copying one file
+	elif not os.path.isdir(src) and not os.path.isdir(dst):
 		safecopy.safeCopyOne(src, dst)
+	# If source is a file and dest is a folder
+	elif not os.path.isdir(src) and os.path.isdir(dst):
+		safecopy.safeCopyOnef(src, dst)
 	else:
-		print('Source and destination must be folders')
+		print('Source and destination both must be folders or files')
 		sys.exit()

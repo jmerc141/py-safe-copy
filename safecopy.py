@@ -49,7 +49,30 @@ def safeCopyOne(src, dst):
 		else:
 			return
 
-	
+def safeCopyOnef(src, dst):
+	print(src, '->', dst)
+	dst = os.path.join(dst, os.path.basename(src))
+	srcHash = copyFile.copy_with_progress(src, dst, False)
+
+	print('\nCreating destination hash...')
+	dstHash = hashlib.md5()
+	with open(dst, 'rb') as d:
+		while True:
+			buf = d.read(65536)
+			if not buf:
+				break
+			dstHash.update(buf)
+
+	if not srcHash == dstHash.hexdigest():
+		print('Hashes do not match, try again? (y/n)')
+		t = input()
+		if t == 'y':
+			x-=1
+		else:
+			return
+	else:
+		print('Hashes match:', srcHash)
+		
 
 		
 
